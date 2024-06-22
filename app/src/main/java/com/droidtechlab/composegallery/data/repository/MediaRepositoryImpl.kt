@@ -7,11 +7,12 @@ import com.droidtechlab.composegallery.core.contentFlowObserver
 import com.droidtechlab.composegallery.data.local.Query
 import com.droidtechlab.composegallery.data.local.getAlbums
 import com.droidtechlab.composegallery.domain.repository.MediaRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.map
 
 class MediaRepositoryImpl @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
 ) : MediaRepository {
 
     override suspend fun getVideoAlbums() = context.contentFlowObserver(VIDEO_URI).map {
