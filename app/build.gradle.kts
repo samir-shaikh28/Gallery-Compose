@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.droidtechlab.composegallery"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -63,7 +63,7 @@ dependencies {
     // Hilt - DI
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
