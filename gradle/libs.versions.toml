@@ -9,6 +9,8 @@ lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
 hilt = "2.50"
+coilVersion = "3.0.0-alpha06"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +29,14 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt"}
+compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
+
+# Coil
+coil-video = { module = "io.coil-kt.coil3:coil-video", version.ref = "coilVersion" }
+coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coilVersion" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coilVersion" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVersion" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
