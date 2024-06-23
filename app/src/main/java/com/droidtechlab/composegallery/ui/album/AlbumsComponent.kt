@@ -3,28 +3,25 @@ package com.droidtechlab.composegallery.ui.album
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.CachePolicy
@@ -53,9 +50,21 @@ fun AlbumComponent(
             )
         }
         // Title
-        Text(album.label)
+        Text(
+            text = album.label,
+            style = TextStyle(
+                fontSize = 16.sp,
+            ),
+            maxLines = 1
+        )
         // Count
-        Text("${album.count}")
+        Text(
+            text = "${album.count} items",
+            style = TextStyle(
+                fontSize = 12.sp
+            ),
+            maxLines = 1
+        )
     }
 }
 
@@ -82,7 +91,6 @@ fun AlbumImage(
                 .clickable(onClick = onAlbumClick)
         )
     } else {
-        println("### uri - ${album.uri}")
         val painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalPlatformContext.current)
                 .data(album.uri)
@@ -101,8 +109,7 @@ fun AlbumImage(
                     shape = RoundedCornerShape(16.dp)
                 )
                 .clip(RoundedCornerShape(16.dp))
-                .clickable(onClick = onAlbumClick)
-            ,
+                .clickable(onClick = onAlbumClick),
             painter = painter,
             contentDescription = album.label,
             contentScale = ContentScale.Crop,

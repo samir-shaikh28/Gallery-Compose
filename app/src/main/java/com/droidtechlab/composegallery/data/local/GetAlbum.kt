@@ -2,6 +2,7 @@ package com.droidtechlab.composegallery.data.local
 
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.database.MergeCursor
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -9,13 +10,11 @@ import com.droidtechlab.composegallery.domain.model.Album
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-suspend fun ContentResolver.getAlbums(
-    query: Query,
-
-): List<Album> {
+suspend fun ContentResolver.getAlbums(): List<Album> {
     return withContext(Dispatchers.IO) {
         val timeStart = System.currentTimeMillis()
         val albums = ArrayList<Album>()
+        val query = Query.AlbumQuery()
         val bundle = query.bundle ?: Bundle()
         val albumQuery = query.copy(
             bundle = bundle.apply {
@@ -29,15 +28,8 @@ suspend fun ContentResolver.getAlbums(
                 )
             },
         )
-        val uri = if(query is Query.PhotoAlbumQuery)  {
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        } else {
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        }
-        query(uri,
-            albumQuery.projection,
-            albumQuery.bundle,
-            null)?.use {
+
+        query(albumQuery).use {
             with(it) {
                 while (moveToNext()) {
                     try {
@@ -89,9 +81,4 @@ suspend fun ContentResolver.getAlbums(
         }
         return@withContext albums
     }
-}
-
-enum class MediaType {
-    IMAGE,
-    VIDEO
 }

@@ -9,6 +9,24 @@ sealed class Query(
     var bundle: Bundle? = null
 ) {
 
+    class MediaQuery : Query(
+        projection = arrayOf(
+            MediaStore.MediaColumns._ID,
+            MediaStore.MediaColumns.DATA,
+            MediaStore.MediaColumns.RELATIVE_PATH,
+            MediaStore.MediaColumns.DISPLAY_NAME,
+            MediaStore.MediaColumns.BUCKET_ID,
+            MediaStore.MediaColumns.DATE_MODIFIED,
+            MediaStore.MediaColumns.DATE_TAKEN,
+            MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
+            MediaStore.MediaColumns.DURATION,
+            MediaStore.MediaColumns.MIME_TYPE,
+            MediaStore.MediaColumns.IS_FAVORITE,
+            MediaStore.MediaColumns.IS_TRASHED
+        ),
+    )
+
+
     class PhotoQuery: Query(
         projection = arrayOf(
             MediaStore.MediaColumns._ID,
@@ -56,6 +74,7 @@ sealed class Query(
                 ContentResolver.QUERY_ARG_SQL_SELECTION,
                 MediaStore.MediaColumns.MIME_TYPE + " LIKE ?"
             )
+
             putStringArray(
                 ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                 arrayOf("video%")
@@ -63,7 +82,7 @@ sealed class Query(
         }
     )
 
-    class PhotoAlbumQuery : Query(
+    class AlbumQuery : Query(
         projection = arrayOf(
             MediaStore.MediaColumns.BUCKET_ID,
             MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
@@ -74,17 +93,7 @@ sealed class Query(
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.DATE_MODIFIED,
             MediaStore.MediaColumns.DATE_TAKEN
-        ),
-        bundle = Bundle().apply {
-            putString(
-                ContentResolver.QUERY_ARG_SQL_SELECTION,
-                MediaStore.MediaColumns.MIME_TYPE + " LIKE ?"
-            )
-            putStringArray(
-                ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
-                arrayOf("image%")
-            )
-        }
+        )
     )
 
     class VideoAlbumQuery : Query(
