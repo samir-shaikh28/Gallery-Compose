@@ -25,8 +25,9 @@ class MainViewModel @Inject constructor(
         getAlbums()
     }
 
+
     private fun getAlbums()  = viewModelScope.launch(Dispatchers.IO) {
-        repository.getVideoAlbums().collectLatest {
+        repository.getAlbums().collectLatest {
             val data = it.data ?: emptyList()
             val error =
                 if (it is Result.Error) it.message ?: "An error occurred" else ""

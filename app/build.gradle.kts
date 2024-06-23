@@ -65,8 +65,14 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.compose.lifecycle.runtime)
 
+    // Compose Navigation
+    implementation(libs.compose.navigation)
+
     // Hilt - DI
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     kapt(libs.hilt.android.compiler)
 
     // Coil

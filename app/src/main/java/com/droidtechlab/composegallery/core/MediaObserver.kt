@@ -13,11 +13,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 private var observerJob: Job? = null
+
 /**
  * Register an observer class that gets callbacks when data identified by a given content URI
  * changes.
  */
-fun Context.contentFlowObserver(uri: Uri) = callbackFlow {
+fun Context.contentFlowObserver(uris: Array<Uri>) = callbackFlow {
     val observer = object : ContentObserver(null) {
         override fun onChange(selfChange: Boolean) {
             observerJob?.cancel()
@@ -26,7 +27,9 @@ fun Context.contentFlowObserver(uri: Uri) = callbackFlow {
             }
         }
     }
-    contentResolver.registerContentObserver(uri, true, observer)
+    for (uri in uris) {
+        contentResolver.registerContentObserver(uri, true, observer)
+    }
     // trigger first.
     observerJob = launch(Dispatchers.IO) {
         send(true)
