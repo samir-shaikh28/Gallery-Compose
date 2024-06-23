@@ -22,30 +22,39 @@ class MediaRepositoryImpl @Inject constructor(
 
     override suspend fun getAlbums() = context.contentFlowObserver(URIs).map {
         try {
+//            val query = Query.PhotoQuery()
+//            val pageSize = if(page < 2) 50 else 80
             Result.Success(data = context.contentResolver.getAlbums())
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "An error occurred")
         }
     }
 
-    override suspend fun getAllImages() = context.contentFlowObserver(IMAGE_URI).map {
+    override suspend fun getAllImages(page: Int) = context.contentFlowObserver(IMAGE_URI).map {
+
         try {
-            Result.Success(data = context.contentResolver.getMedia(Query.PhotoQuery()).sortedByDescending { it.timestamp })
+            val query = Query.PhotoQuery()
+            val pageSize = if(page < 2) 50 else 80
+            Result.Success(data = context.contentResolver.getMedia(query.updatePage(query, page, pageSize)))
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "An error occurred")
         }
     }
 
 
-    override suspend fun getAllVideos() = context.contentFlowObserver(VIDEO_URI).map {
+    override suspend fun getAllVideos(page: Int) = context.contentFlowObserver(VIDEO_URI).map {
         try {
-            Result.Success(data = context.contentResolver.getMedia(Query.VideoQuery()).sortedByDescending { it.timestamp })
+            val query = Query.VideoQuery()
+            val pageSize = if(page < 2) 50 else 120
+            Result.Success(data = context.contentResolver.getMedia(query.updatePage(query, page, pageSize)))
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "An error occurred")
         }
     }
 
-    override suspend fun getMediaForAlbumId(albumId: Long): Flow<Result<List<Media>>> {
+    override suspend fun getMediaForAlbumId(albumId: Long, page: Int): Flow<Result<List<Media>>> {
+        val pageSize = if(page < 2) 50 else 120
+
         val query = Query.MediaQuery().copy(
             bundle = Bundle().apply {
                 putString(
@@ -56,12 +65,20 @@ class MediaRepositoryImpl @Inject constructor(
                     ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                     arrayOf(albumId.toString())
                 )
+                putInt(
+                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+                )
+                putStringArray(
+                    ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                    arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
+                )
             }
         )
 
         return context.contentFlowObserver(URIs).map {
             try {
-                Result.Success(data = context.contentResolver.getMedia(query).sortedByDescending { it.timestamp })
+                Result.Success(data = context.contentResolver.getMedia(query.updatePage(query, page, pageSize)).sortedByDescending { it.timestamp })
             } catch (e: Exception) {
                 Result.Error(message = e.localizedMessage ?: "An error occurred")
             }

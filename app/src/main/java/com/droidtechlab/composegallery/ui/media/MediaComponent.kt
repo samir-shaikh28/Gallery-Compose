@@ -19,6 +19,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.size.Scale
 import com.droidtechlab.composegallery.domain.model.Media
+import com.droidtechlab.composegallery.domain.model.MediaEqualityDelegate
 
 @Composable
 fun MediaComponent(media: Media,
@@ -28,11 +29,11 @@ fun MediaComponent(media: Media,
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .data(media.uri)
             .memoryCachePolicy(CachePolicy.ENABLED)
+            .diskCachePolicy(CachePolicy.ENABLED)
             .placeholderMemoryCacheKey(media.toString())
             .scale(Scale.FIT)
             .build(),
-        contentScale = ContentScale.FillBounds
-    )
+        contentScale = ContentScale.FillBounds)
     Image(
         modifier = Modifier
             .fillMaxSize()

@@ -10,6 +10,8 @@ import kotlinx.parcelize.Parcelize
 data class MediaState(
     val media: List<Media> = emptyList(),
     val isLoading: Boolean = false,
+    val isEndReached: Boolean = false,
+    val page: Int = 1,
     val title: String = "",
     val error: String = ""
 ) : Parcelable

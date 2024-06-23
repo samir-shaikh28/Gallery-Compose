@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.droidtechlab.composegallery.common.Constants
 import com.droidtechlab.composegallery.common.Request
 import com.droidtechlab.composegallery.common.Screen
+import com.droidtechlab.composegallery.ui.component.Loader
 import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
 
 @Composable
@@ -25,13 +26,15 @@ fun AlbumScreen(
 ) {
     val state by viewModel.albumsState.collectAsStateWithLifecycle()
 
+    if(state.isLoading) {
+        Loader(modifier = Modifier)
+    }
     LazyVerticalGrid(
         modifier = Modifier
             .padding(horizontal = 8.dp)
             .fillMaxSize(),
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
 
         item(span = { GridItemSpan(2) }) {

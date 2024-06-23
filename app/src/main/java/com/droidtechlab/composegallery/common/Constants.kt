@@ -8,4 +8,6 @@ object Constants {
     const val ALL_IMAGES = "AllImages"
     const val ALL_VIDEOS = "AllVideos"
     const val Album = "Album"
+
+    const val PAGE_SIZE = 40
 }

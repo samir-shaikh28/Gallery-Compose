@@ -168,5 +168,5 @@ data class Media(
 class MediaEqualityDelegate : EqualityDelegate {
     override fun equals(self: Any?, other: Any?): Boolean = true
 
-    override fun hashCode(self: Any?): Int = 31
+    override fun hashCode(self: Any?): Int = self.hashCode()
 }

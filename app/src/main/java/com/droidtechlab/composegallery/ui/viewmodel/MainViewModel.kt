@@ -27,12 +27,13 @@ class MainViewModel @Inject constructor(
 
 
     private fun getAlbums()  = viewModelScope.launch(Dispatchers.IO) {
+        _albumsState.emit(AlbumState(isLoading = true))
         repository.getAlbums().collectLatest {
             val data = it.data ?: emptyList()
             val error =
                 if (it is Result.Error) it.message ?: "An error occurred" else ""
             if (data == albumsState.value.albums) return@collectLatest
-            _albumsState.emit(AlbumState(albums = data, error = error))
+            _albumsState.emit(AlbumState(albums = data, error = error, isLoading = false))
         }
     }
 }

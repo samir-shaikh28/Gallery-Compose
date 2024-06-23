@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.droidtechlab.composegallery.common.Screen
 import com.droidtechlab.composegallery.ui.album.AlbumScreen
+import com.droidtechlab.composegallery.ui.media.ImagePreviewScreen
 import com.droidtechlab.composegallery.ui.media.MediaScreen
 import com.droidtechlab.composegallery.ui.media.VideoPlayerScreen
 import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
@@ -55,6 +56,16 @@ fun HomeScreen(
         ) { backStackEntry ->
             val uriStr = backStackEntry.arguments?.getString("videoUri")
             VideoPlayerScreen(uri = Uri.parse(uriStr), navController)
+        }
+        composable("${Screen.VideoPlayer.value}?imageUri={imageUri}",
+            arguments = listOf(
+                navArgument(name = "imageUri") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val uriStr = backStackEntry.arguments?.getString("imageUri")
+            ImagePreviewScreen(uri = Uri.parse(uriStr))
         }
     }
 }
