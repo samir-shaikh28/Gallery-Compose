@@ -9,9 +9,9 @@ interface MediaRepository {
 
     suspend fun getAlbums(): Flow<Result<List<Album>>>
 
-    suspend fun getAllImages(): Flow<Result<List<Media>>>
+    suspend fun getAllImages(page: Int): Flow<Result<List<Media>>>
 
-    suspend fun getAllVideos(): Flow<Result<List<Media>>>
+    suspend fun getAllVideos(page: Int): Flow<Result<List<Media>>>
 
-    suspend fun getMediaForAlbumId(albumId: Long):  Flow<Result<List<Media>>>
+    suspend fun getMediaForAlbumId(albumId: Long, page: Int):  Flow<Result<List<Media>>>
 }

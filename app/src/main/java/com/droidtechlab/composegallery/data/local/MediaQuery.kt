@@ -51,6 +51,14 @@ sealed class Query(
                 ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                 arrayOf("image%")
             )
+            putInt(
+                ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            )
+            putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
+            )
         }
     )
 
@@ -79,6 +87,14 @@ sealed class Query(
                 ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                 arrayOf("video%")
             )
+            putInt(
+                ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            )
+            putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
+            )
         }
     )
 
@@ -93,32 +109,19 @@ sealed class Query(
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.DATE_MODIFIED,
             MediaStore.MediaColumns.DATE_TAKEN
-        )
-    )
-
-    class VideoAlbumQuery : Query(
-        projection = arrayOf(
-            MediaStore.MediaColumns.BUCKET_ID,
-            MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
-            MediaStore.MediaColumns.DISPLAY_NAME,
-            MediaStore.MediaColumns.DATA,
-            MediaStore.MediaColumns.RELATIVE_PATH,
-            MediaStore.MediaColumns._ID,
-            MediaStore.MediaColumns.MIME_TYPE,
-            MediaStore.MediaColumns.DATE_MODIFIED,
-            MediaStore.MediaColumns.DATE_TAKEN
         ),
         bundle = Bundle().apply {
-            putString(
-                ContentResolver.QUERY_ARG_SQL_SELECTION,
-                MediaStore.MediaColumns.MIME_TYPE + " LIKE ?"
+            putInt(
+                ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
             )
             putStringArray(
-                ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
-                arrayOf("video%")
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
             )
         }
     )
+
 
     fun copy(
         projection: Array<String> = this.projection,
@@ -127,6 +130,17 @@ sealed class Query(
         this.projection = projection
         this.bundle = bundle
         return this
+    }
+
+    fun updatePage(query: Query, page: Int, pageSize: Int) : Query {
+        val bundle = query.bundle ?: Bundle()
+        val newQuery = query.copy(
+            bundle = bundle.apply {
+                putInt(ContentResolver.QUERY_ARG_LIMIT, pageSize)
+                putInt(ContentResolver.QUERY_ARG_OFFSET, (page - 1) * pageSize)
+            }
+        )
+        return newQuery
     }
 
 }

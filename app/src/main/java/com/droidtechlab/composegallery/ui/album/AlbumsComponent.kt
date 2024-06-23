@@ -28,6 +28,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.size.Scale
 import com.droidtechlab.composegallery.domain.model.Album
+import com.droidtechlab.composegallery.domain.model.MediaEqualityDelegate
 
 @Composable
 fun AlbumComponent(
@@ -53,7 +54,7 @@ fun AlbumComponent(
         Text(
             text = album.label,
             style = TextStyle(
-                fontSize = 16.sp,
+                fontSize = 14.sp,
             ),
             maxLines = 1
         )
@@ -61,7 +62,7 @@ fun AlbumComponent(
         Text(
             text = "${album.count} items",
             style = TextStyle(
-                fontSize = 12.sp
+                fontSize = 10.sp
             ),
             maxLines = 1
         )
@@ -95,10 +96,12 @@ fun AlbumImage(
             model = ImageRequest.Builder(LocalPlatformContext.current)
                 .data(album.uri)
                 .memoryCachePolicy(CachePolicy.ENABLED)
-                .placeholderMemoryCacheKey(album.toString())
+                .placeholderMemoryCacheKey(album.id.toString())
                 .scale(Scale.FIT)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .build(),
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds,
+            modelEqualityDelegate = MediaEqualityDelegate()
         )
         Image(
             modifier = Modifier

@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.droidtechlab.composegallery.common.Constants.ALL_IMAGES
 import com.droidtechlab.composegallery.common.Constants.ALL_VIDEOS
 import com.droidtechlab.composegallery.core.Result
+import com.droidtechlab.composegallery.core.pager.DefaultPaginator
+import com.droidtechlab.composegallery.domain.model.Media
 import com.droidtechlab.composegallery.domain.repository.MediaRepository
 import com.droidtechlab.composegallery.ui.media.MediaState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,32 +28,55 @@ class MediaViewModel @Inject constructor(
     val albumId: Long = savedStateHandle["album_id"] ?: -1L
     val albumLabel: String = savedStateHandle["album_label"] ?: ""
 
-    init {
-        getMedia()
-    }
-
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState = _mediaState.asStateFlow()
-    private var title: String = ""
-    private fun getMedia() = viewModelScope.launch(Dispatchers.IO) {
-        val dataSource = if (type == ALL_IMAGES) {
-            title = "All Images"
-            repository.getAllImages()
-        } else if(type == ALL_VIDEOS) {
-            title = "All Videos"
-            repository.getAllVideos()
-        } else {
-            title = albumLabel
-            repository.getMediaForAlbumId(albumId)
-        }
 
-        dataSource.collectLatest {
-            val data = it.data ?: emptyList()
-            val error = if (it is Result.Error) it.message ?: "An error occurred" else ""
-            if (data == mediaState.value.media) return@collectLatest
-            _mediaState.emit(MediaState(media = data, error = error, title = title))
+    private var title: String = ""
+
+    private val paginator = DefaultPaginator(
+        initialKey = _mediaState.value.page,
+        onLoadUpdated = {
+            _mediaState.value = _mediaState.value.copy(isLoading = it)
+        },
+        onRequest = { nextPage ->
+            _mediaState.value = _mediaState.value.copy(isLoading = true)
+            val dataSource = if (type == ALL_IMAGES) {
+                title = "All Images"
+                repository.getAllImages(nextPage)
+            } else if (type == ALL_VIDEOS) {
+                title = "All Videos"
+                repository.getAllVideos(nextPage)
+            } else {
+                title = albumLabel
+                repository.getMediaForAlbumId(albumId, nextPage)
+            }
+
+            dataSource
+        },
+        getNextKey = {
+            mediaState.value.page + 1
+        },
+        onError = {
+            _mediaState.value = _mediaState.value.copy(error = it?.localizedMessage.toString(), isLoading = false)
+        },
+        onSuccess = { items: List<Media>, newKey ->
+            _mediaState.value = _mediaState.value.copy(
+                media =  _mediaState.value.media + items,
+                page = newKey,
+                isEndReached = items.isEmpty(),
+                title = title
+            )
         }
+    )
+
+    init {
+        fetchMedia()
     }
+
+    fun fetchMedia() = viewModelScope.launch(Dispatchers.IO) {
+        paginator.loadNextItems()
+    }
+
 
 
 }
