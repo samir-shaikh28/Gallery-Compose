@@ -1,5 +1,6 @@
 package com.droidtechlab.composegallery.ui.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.droidtechlab.composegallery.core.Result
@@ -26,7 +27,7 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private fun getAlbums()  = viewModelScope.launch(Dispatchers.IO) {
+    fun getAlbums()  = viewModelScope.launch(Dispatchers.IO) {
         _albumsState.emit(AlbumState(isLoading = true))
         repository.getAlbums().collectLatest {
             val data = it.data ?: emptyList()

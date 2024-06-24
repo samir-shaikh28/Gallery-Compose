@@ -1,7 +1,8 @@
 package com.droidtechlab.composegallery.common
 
 enum class Screen(val value: String) {
-    Home("Home"),
+    AlbumScreen("AlbumScreen"),
     Media("Media"),
-    VideoPlayer("VideoPlayer")
+    VideoPlayer("VideoPlayer"),
+    ImagePreview("ImagePreview"),
 }

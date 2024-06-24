@@ -58,7 +58,7 @@ fun MediaScreen(
                 if (media.isVideo) {
                     navController.navigate("${Screen.VideoPlayer.value}?videoUri=${media.uri}")
                 } else {
-                    navController.navigate("${Screen.VideoPlayer.value}?imageUri=${media.uri}")
+                    navController.navigate("${Screen.ImagePreview.value}?imageUri=${media.uri}")
 
                 }
 

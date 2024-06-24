@@ -1,10 +1,8 @@
-package com.droidtechlab.composegallery.ui.home
+package com.droidtechlab.composegallery.ui.navigation
 
 import android.net.Uri
-import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,15 +17,19 @@ import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
 import com.droidtechlab.composegallery.ui.viewmodel.MediaViewModel
 
 @Composable
-fun HomeScreen(
+fun NavigationComponent(
     mainViewModel: MainViewModel,
 ) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.Home.value) {
-        composable(Screen.Home.value) {
+    NavHost(navController = navController,
+        startDestination = Screen.AlbumScreen.value
+    ) {
+
+        composable(Screen.AlbumScreen.value) {
             AlbumScreen(viewModel = mainViewModel, navController = navController)
         }
+
         composable("${Screen.Media.value}?request_type={request_type}&album_label={album_label}&album_id={album_id}",
             arguments = listOf(
                 navArgument(name = "request_type") {
@@ -44,9 +46,12 @@ fun HomeScreen(
             )
         ) {
             val mediaViewModel = hiltViewModel<MediaViewModel>()
-            MediaScreen(viewModel = mediaViewModel,
-                navController = navController)
+            MediaScreen(
+                viewModel = mediaViewModel,
+                navController = navController
+            )
         }
+
         composable("${Screen.VideoPlayer.value}?videoUri={videoUri}",
             arguments = listOf(
                 navArgument(name = "videoUri") {
@@ -57,7 +62,8 @@ fun HomeScreen(
             val uriStr = backStackEntry.arguments?.getString("videoUri")
             VideoPlayerScreen(uri = Uri.parse(uriStr), navController)
         }
-        composable("${Screen.VideoPlayer.value}?imageUri={imageUri}",
+
+        composable("${Screen.ImagePreview.value}?imageUri={imageUri}",
             arguments = listOf(
                 navArgument(name = "imageUri") {
                     type = NavType.StringType
