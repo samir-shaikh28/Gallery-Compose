@@ -7,15 +7,10 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.droidtechlab.composegallery.ui.album.AlbumScreen
-import com.droidtechlab.composegallery.ui.home.HomeScreen
+import com.droidtechlab.composegallery.ui.navigation.NavigationComponent
 import com.droidtechlab.composegallery.ui.theme.ComposeGalleryTheme
 import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
-import com.droidtechlab.composegallery.ui.viewmodel.MediaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +23,7 @@ class MainActivity : ComponentActivity() {
             ComposeGalleryTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    HomeScreen(mainViewModel)
+                    NavigationComponent(mainViewModel)
                   //  AlbumScreen(viewModel = mainViewModel)
                 }
             }
