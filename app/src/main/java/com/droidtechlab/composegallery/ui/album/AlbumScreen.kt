@@ -143,7 +143,8 @@ fun AlbumScreen(
                         navController.navigate(
                             "${Screen.Media.value}?request_type=${Constants.Album}" +
                                     "&album_label=${album.label}" +
-                                    "&album_id=${album.id}"
+                                    "&album_id=${album.id}" +
+                                    "&album_item_count=${album.count}"
                         )
                     }
                 }
