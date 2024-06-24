@@ -13,13 +13,12 @@ import com.droidtechlab.composegallery.ui.album.AlbumScreen
 import com.droidtechlab.composegallery.ui.media.ImagePreviewScreen
 import com.droidtechlab.composegallery.ui.media.MediaScreen
 import com.droidtechlab.composegallery.ui.media.VideoPlayerScreen
-import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
+import com.droidtechlab.composegallery.ui.viewmodel.AlbumViewModel
 import com.droidtechlab.composegallery.ui.viewmodel.MediaViewModel
 
 @Composable
-fun NavigationComponent(
-    mainViewModel: MainViewModel,
-) {
+fun NavigationComponent() {
+
     val navController = rememberNavController()
 
     NavHost(navController = navController,
@@ -27,7 +26,8 @@ fun NavigationComponent(
     ) {
 
         composable(Screen.AlbumScreen.value) {
-            AlbumScreen(viewModel = mainViewModel, navController = navController)
+            val albumViewModel = hiltViewModel<AlbumViewModel>()
+            AlbumScreen(viewModel = albumViewModel, navController = navController)
         }
 
         composable("${Screen.Media.value}?request_type={request_type}&album_label={album_label}&album_id={album_id}",

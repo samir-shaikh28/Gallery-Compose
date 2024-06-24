@@ -22,8 +22,6 @@ class MediaRepositoryImpl @Inject constructor(
 
     override suspend fun getAlbums() = context.contentFlowObserver(URIs).map {
         try {
-//            val query = Query.PhotoQuery()
-//            val pageSize = if(page < 2) 50 else 80
             Result.Success(data = context.contentResolver.getAlbums())
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "An error occurred")

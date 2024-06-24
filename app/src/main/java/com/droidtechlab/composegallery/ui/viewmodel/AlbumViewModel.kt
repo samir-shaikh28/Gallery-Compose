@@ -1,6 +1,5 @@
 package com.droidtechlab.composegallery.ui.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.droidtechlab.composegallery.core.Result
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class AlbumViewModel @Inject constructor(
     private val repository: MediaRepository
 ): ViewModel() {
 

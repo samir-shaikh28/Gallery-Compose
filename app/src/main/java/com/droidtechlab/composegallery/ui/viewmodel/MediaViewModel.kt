@@ -24,9 +24,9 @@ class MediaViewModel @Inject constructor(
     private val repository: MediaRepository
 ) : ViewModel() {
 
-    val type: String = savedStateHandle["request_type"] ?: ""
-    val albumId: Long = savedStateHandle["album_id"] ?: -1L
-    val albumLabel: String = savedStateHandle["album_label"] ?: ""
+    private val type: String = savedStateHandle["request_type"] ?: ""
+    private val albumId: Long = savedStateHandle["album_id"] ?: -1L
+    private val albumLabel: String = savedStateHandle["album_label"] ?: ""
 
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState = _mediaState.asStateFlow()
@@ -35,22 +35,26 @@ class MediaViewModel @Inject constructor(
 
     private val paginator = DefaultPaginator(
         initialKey = _mediaState.value.page,
+
         onLoadUpdated = {
             _mediaState.value = _mediaState.value.copy(isLoading = it)
         },
         onRequest = { nextPage ->
             _mediaState.value = _mediaState.value.copy(isLoading = true)
-            val dataSource = if (type == ALL_IMAGES) {
-                title = "All Images"
-                repository.getAllImages(nextPage)
-            } else if (type == ALL_VIDEOS) {
-                title = "All Videos"
-                repository.getAllVideos(nextPage)
-            } else {
-                title = albumLabel
-                repository.getMediaForAlbumId(albumId, nextPage)
+            val dataSource = when (type) {
+                ALL_IMAGES -> {
+                    title = "All Images"
+                    repository.getAllImages(nextPage)
+                }
+                ALL_VIDEOS -> {
+                    title = "All Videos"
+                    repository.getAllVideos(nextPage)
+                }
+                else -> {
+                    title = albumLabel
+                    repository.getMediaForAlbumId(albumId, nextPage)
+                }
             }
-
             dataSource
         },
         getNextKey = {

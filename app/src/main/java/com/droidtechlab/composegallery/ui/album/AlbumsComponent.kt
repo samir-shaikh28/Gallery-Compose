@@ -26,9 +26,10 @@ import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.request.allowRgb565
 import coil3.size.Scale
 import com.droidtechlab.composegallery.domain.model.Album
-import com.droidtechlab.composegallery.domain.model.MediaEqualityDelegate
 
 @Composable
 fun AlbumComponent(
@@ -101,7 +102,6 @@ fun AlbumImage(
                 .diskCachePolicy(CachePolicy.ENABLED)
                 .build(),
             contentScale = ContentScale.FillBounds,
-            modelEqualityDelegate = MediaEqualityDelegate()
         )
         Image(
             modifier = Modifier
