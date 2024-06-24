@@ -24,6 +24,16 @@ sealed class Query(
             MediaStore.MediaColumns.IS_FAVORITE,
             MediaStore.MediaColumns.IS_TRASHED
         ),
+        bundle = Bundle().apply {
+            putInt(
+                ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            )
+            putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
+            )
+        }
     )
 
 
