@@ -1,7 +1,6 @@
 package com.droidtechlab.composegallery.ui.album
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -39,13 +38,13 @@ import com.droidtechlab.composegallery.common.Constants
 import com.droidtechlab.composegallery.common.Request
 import com.droidtechlab.composegallery.common.Screen
 import com.droidtechlab.composegallery.ui.component.Loader
-import com.droidtechlab.composegallery.ui.viewmodel.MainViewModel
+import com.droidtechlab.composegallery.ui.viewmodel.AlbumViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun AlbumScreen(
-    viewModel: MainViewModel,
+    viewModel: AlbumViewModel,
     navController: NavHostController
 ) {
     val permissionsToRequest = listOf(
@@ -171,7 +170,6 @@ fun showSnackBar(
             }
 
             SnackbarResult.ActionPerformed -> {
-
                 multiplePermissionResultLauncher.launch(permissionsToRequest.toTypedArray())
             }
         }

@@ -33,10 +33,8 @@ fun MediaScreen(
 ) {
 
     val state by viewModel.mediaState.collectAsStateWithLifecycle()
-    val listState = rememberLazyGridState()
 
     LazyVerticalGrid(
-        state = listState,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxSize(),
