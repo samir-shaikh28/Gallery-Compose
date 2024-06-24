@@ -65,6 +65,14 @@ class MediaRepositoryImpl @Inject constructor(
                     ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                     arrayOf(albumId.toString())
                 )
+                putInt(
+                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+                )
+                putStringArray(
+                    ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                    arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
+                )
             }
         )
 
