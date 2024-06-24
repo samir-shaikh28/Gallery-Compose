@@ -32,6 +32,7 @@ class MediaRepositoryImpl @Inject constructor(
 
         try {
             val query = Query.PhotoQuery()
+            // Can have a custom logic which decide pageSize based on device config
             val pageSize = if(page < 2) 50 else 80
             Result.Success(data = context.contentResolver.getMedia(query.updatePage(query, page, pageSize)))
         } catch (e: Exception) {
@@ -43,6 +44,7 @@ class MediaRepositoryImpl @Inject constructor(
     override suspend fun getAllVideos(page: Int) = context.contentFlowObserver(VIDEO_URI).map {
         try {
             val query = Query.VideoQuery()
+            // Can have a custom logic which decide pageSize based on device config
             val pageSize = if(page < 2) 50 else 120
             Result.Success(data = context.contentResolver.getMedia(query.updatePage(query, page, pageSize)))
         } catch (e: Exception) {
@@ -62,14 +64,6 @@ class MediaRepositoryImpl @Inject constructor(
                 putStringArray(
                     ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS,
                     arrayOf(albumId.toString())
-                )
-                putInt(
-                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
-                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
-                )
-                putStringArray(
-                    ContentResolver.QUERY_ARG_SORT_COLUMNS,
-                    arrayOf(MediaStore.MediaColumns.DATE_MODIFIED)
                 )
             }
         )
