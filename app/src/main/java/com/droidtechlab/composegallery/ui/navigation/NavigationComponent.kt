@@ -30,7 +30,7 @@ fun NavigationComponent() {
             AlbumScreen(viewModel = albumViewModel, navController = navController)
         }
 
-        composable("${Screen.Media.value}?request_type={request_type}&album_label={album_label}&album_id={album_id}",
+        composable("${Screen.Media.value}?request_type={request_type}&album_label={album_label}&album_id={album_id}&album_item_count={album_item_count}",
             arguments = listOf(
                 navArgument(name = "request_type") {
                     type = NavType.StringType
@@ -40,6 +40,10 @@ fun NavigationComponent() {
                     defaultValue = ""
                 },
                 navArgument(name = "album_id") {
+                    type = NavType.LongType
+                    defaultValue = -1L
+                },
+                navArgument(name = "album_item_count") {
                     type = NavType.LongType
                     defaultValue = -1L
                 }

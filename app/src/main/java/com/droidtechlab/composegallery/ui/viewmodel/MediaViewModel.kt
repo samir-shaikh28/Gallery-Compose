@@ -27,6 +27,7 @@ class MediaViewModel @Inject constructor(
     private val type: String = savedStateHandle["request_type"] ?: ""
     private val albumId: Long = savedStateHandle["album_id"] ?: -1L
     private val albumLabel: String = savedStateHandle["album_label"] ?: ""
+    private val albumItemCount: Long = savedStateHandle["album_item_count"] ?: -1L
 
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState = _mediaState.asStateFlow()
@@ -68,7 +69,8 @@ class MediaViewModel @Inject constructor(
                 media =  _mediaState.value.media + items,
                 page = newKey,
                 isEndReached = items.isEmpty(),
-                title = title
+                title = title,
+                itemCount = albumItemCount
             )
         }
     )

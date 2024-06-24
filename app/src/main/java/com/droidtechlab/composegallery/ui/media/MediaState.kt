@@ -12,6 +12,7 @@ data class MediaState(
     val isLoading: Boolean = false,
     val isEndReached: Boolean = false,
     val page: Int = 1,
+    val itemCount: Long = -1L,
     val title: String = "",
     val error: String = ""
 ) : Parcelable

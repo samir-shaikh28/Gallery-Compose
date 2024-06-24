@@ -2,8 +2,10 @@ package com.droidtechlab.composegallery.ui.media
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -42,13 +44,24 @@ fun MediaScreen(
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         item(span = { GridItemSpan(3) }) {
-            Text(
-                modifier = Modifier.padding(16.dp),
-                text = state.title, style = TextStyle(fontSize = 36.sp)
-            )
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Text(
+                    text = state.title, style = TextStyle(fontSize = 36.sp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                if(state.itemCount != -1L) {
+                    Text(
+                        text = "${state.itemCount} items", style = TextStyle(fontSize = 12.sp)
+                    )
+                }
+
+            }
+
         }
 
-        itemsIndexed(state.media, key = { index, item -> item.id }) { index, media ->
+        itemsIndexed(state.media, key = { _, item -> item.id }) { index, media ->
             if (index >= state.media.size - 1 && !state.isLoading && !state.isEndReached) {
                 viewModel.fetchMedia()
             }
